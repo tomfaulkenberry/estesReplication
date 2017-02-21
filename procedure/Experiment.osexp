@@ -1,0 +1,302 @@
+---
+API: 2
+OpenSesame: 3.1.4
+Platform: posix
+---
+set width 1024
+set uniform_coordinates yes
+set title "perceptual identification task"
+set subject_parity even
+set subject_nr 0
+set start experiment
+set sound_sample_size -16
+set sound_freq 48000
+set sound_channels 2
+set sound_buf_size 1024
+set sampler_backend legacy
+set round_decimals 2
+set mouse_backend xpyriment
+set keyboard_backend legacy
+set height 768
+set fullscreen no
+set form_clicks no
+set foreground white
+set font_underline no
+set font_size 24
+set font_italic no
+set font_family mono
+set font_bold no
+set experiment_path "/Users/tom/Dropbox/experiments/spring2017/estesReplication"
+set disable_garbage_collection yes
+set description "The main experiment item"
+set coordinates uniform
+set compensation 0
+set color_backend legacy
+set clock_backend legacy
+set canvas_backend xpyriment
+set bidi no
+set background black
+
+define sketchpad contextWord
+	set duration 500
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=36 html=yes show_if=always text="[contextWord]" x=0 y=0 z_index=0
+
+define sketchpad contextWord_1
+	set duration 500
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=36 html=yes show_if=always text="[contextWord]" x=0 y=0 z_index=0
+
+define sketchpad cueWord
+	set duration 250
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=36 html=no show_if=always text="[cueWord]" x=0 y=0 z_index=0
+
+define sketchpad cueWord_1
+	set duration 250
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=36 html=no show_if=always text="[cueWord]" x=0 y=0 z_index=0
+
+define sketchpad delay
+	set duration 50
+	set description "Displays stimuli"
+
+define sketchpad delay_1
+	set duration 50
+	set description "Displays stimuli"
+
+define sequence experiment
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run instruction1 always
+	run practiceBlock always
+	run instruction2 always
+	run experimentalBlock always
+
+define loop experimentalBlock
+	set source_file ""
+	set source table
+	set repeat 1
+	set order random
+	set description "Repeatedly runs another item"
+	set cycles 20
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 contextWord bear
+	setcycle 0 cueWord snout
+	setcycle 0 location top
+	setcycle 0 stimulus x
+	setcycle 1 contextWord bear
+	setcycle 1 cueWord claw
+	setcycle 1 location bottom
+	setcycle 1 stimulus o
+	setcycle 2 contextWord bedroom
+	setcycle 2 cueWord curtains
+	setcycle 2 location top
+	setcycle 2 stimulus x
+	setcycle 3 contextWord bedroom
+	setcycle 3 cueWord carpet
+	setcycle 3 location bottom
+	setcycle 3 stimulus o
+	setcycle 4 contextWord bicycle
+	setcycle 4 cueWord seat
+	setcycle 4 location top
+	setcycle 4 stimulus x
+	setcycle 5 contextWord bicycle
+	setcycle 5 cueWord tire
+	setcycle 5 location bottom
+	setcycle 5 stimulus x
+	setcycle 6 contextWord bird
+	setcycle 6 cueWord eye
+	setcycle 6 location top
+	setcycle 6 stimulus o
+	setcycle 7 contextWord bird
+	setcycle 7 cueWord talon
+	setcycle 7 location bottom
+	setcycle 7 stimulus x
+	setcycle 8 contextWord bottle
+	setcycle 8 cueWord cap
+	setcycle 8 location top
+	setcycle 8 stimulus o
+	setcycle 9 contextWord bottle
+	setcycle 9 cueWord coaster
+	setcycle 9 location bottom
+	setcycle 9 stimulus x
+	setcycle 10 contextWord broom
+	setcycle 10 cueWord handle
+	setcycle 10 location top
+	setcycle 10 stimulus ""
+	setcycle 11 contextWord broom
+	setcycle 11 cueWord bristles
+	setcycle 11 location bottom
+	setcycle 11 stimulus ""
+	setcycle 12 contextWord car
+	setcycle 12 cueWord windows
+	setcycle 12 location top
+	setcycle 12 stimulus ""
+	setcycle 13 contextWord car
+	setcycle 13 cueWord wheels
+	setcycle 13 location bottom
+	setcycle 13 stimulus ""
+	setcycle 14 contextWord church
+	setcycle 14 cueWord steeple
+	setcycle 14 location top
+	setcycle 14 stimulus ""
+	setcycle 15 contextWord church
+	setcycle 15 cueWord pew
+	setcycle 15 location bottom
+	setcycle 15 stimulus ""
+	setcycle 16 contextWord clock
+	setcycle 16 cueWord tower
+	setcycle 16 location top
+	setcycle 16 stimulus ""
+	setcycle 17 contextWord clock
+	setcycle 17 cueWord radio
+	setcycle 17 location bottom
+	setcycle 17 stimulus ""
+	setcycle 18 contextWord coconut
+	setcycle 18 cueWord tree
+	setcycle 18 location top
+	setcycle 18 stimulus ""
+	setcycle 19 contextWord coconut
+	setcycle 19 cueWord milk
+	setcycle 19 location bottom
+	setcycle 19 stimulus ""
+	run experimentalSequence
+
+define sequence experimentalSequence
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run fixation_1 always
+	run contextWord_1 always
+	run cueWord_1 always
+	run delay_1 always
+	run upperStimulus_1 "[location]=top"
+	run lowerStimulus_1 "[location]=bottom"
+	run response_1 always
+	run logger always
+
+define sketchpad fixation
+	set duration 250
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=36 html=yes show_if=always text="+" x=0 y=0 z_index=0
+
+define sketchpad fixation_1
+	set duration 250
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=36 html=yes show_if=always text="+" x=0 y=0 z_index=0
+
+define sketchpad instruction1
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=0 color=white font_bold=no font_family=mono font_italic=no font_size=24 html=yes show_if=always text="Thank you for participating in this experiment.<br />The experiment typically takes about 10 minutes to complete.<br /><br />Each trial of the experiment has two parts.  <br />In the first part, you will simply read a pair of words. <br />You won't need to respond to the word pair...just consider <br />what it might mean.<br /><br />Then, after about one second,the letter 'X' or 'O' <br />will appear at the top or bottom of the screen.<br /><br />For these, your task is to type the letter ('X' or 'O')<br />as quickly as you can.  Please try to respond as quickly <br />as you can, without making errors.<br /><br />The computer will be timing your responses.  So you get an <br />idea of what the experiment will be like, you'll do<br />a few practice trials before the real experiment.<br /><br />When you're ready to begin the practice trials,<br />press the spacebar." x=-416.0 y=-288.0 z_index=0
+
+define sketchpad instruction2
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=0 color=white font_bold=no font_family=mono font_italic=no font_size=24 html=yes show_if=always text="You've finished the practice trials.  The real<br />experimental trials will be just like the ones you<br />just did.<br /><br />Just remember to press the 'X' or 'O' key as fast<br />as you can after reading the word pairs.<br /><br />Whenever you're ready to start the real experiment,<br />press the spacebar, and it will begin immediately." x=-416 y=-288 z_index=0
+
+define logger logger
+	set description "Logs experimental data"
+	set auto_log no
+
+define sketchpad lowerStimulus
+	set duration 0
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=42 html=yes show_if=always text="[stimulus]" x=0 y=320 z_index=0
+
+define sketchpad lowerStimulus_1
+	set duration 0
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=42 html=yes show_if=always text="[stimulus]" x=0 y=320 z_index=0
+
+define loop practiceBlock
+	set source_file ""
+	set source table
+	set repeat 1
+	set order random
+	set description "Repeatedly runs another item"
+	set cycles 10
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 contextWord floral
+	setcycle 0 cueWord wreath
+	setcycle 0 location top
+	setcycle 0 stimulus x
+	setcycle 1 contextWord floral
+	setcycle 1 cueWord perfume
+	setcycle 1 location bottom
+	setcycle 1 stimulus o
+	setcycle 2 contextWord historical
+	setcycle 2 cueWord members
+	setcycle 2 location top
+	setcycle 2 stimulus x
+	setcycle 3 contextWord historical
+	setcycle 3 cueWord elders
+	setcycle 3 location bottom
+	setcycle 3 stimulus o
+	setcycle 4 contextWord marital
+	setcycle 4 cueWord instincts
+	setcycle 4 location top
+	setcycle 4 stimulus x
+	setcycle 5 contextWord marital
+	setcycle 5 cueWord preparation
+	setcycle 5 location bottom
+	setcycle 5 stimulus x
+	setcycle 6 contextWord national
+	setcycle 6 cueWord resources
+	setcycle 6 location top
+	setcycle 6 stimulus o
+	setcycle 7 contextWord national
+	setcycle 7 cueWord police
+	setcycle 7 location bottom
+	setcycle 7 stimulus x
+	setcycle 8 contextWord paper
+	setcycle 8 cueWord equipment
+	setcycle 8 location top
+	setcycle 8 stimulus o
+	setcycle 9 contextWord paper
+	setcycle 9 cueWord staples
+	setcycle 9 location bottom
+	setcycle 9 stimulus x
+	run practiceSequence
+
+define sequence practiceSequence
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run fixation always
+	run contextWord always
+	run cueWord always
+	run delay always
+	run upperStimulus "[location]=top"
+	run lowerStimulus "[location]=bottom"
+	run response always
+
+define keyboard_response response
+	set timeout infinite
+	set flush yes
+	set duration keypress
+	set description "Collects keyboard responses"
+	set correct_response "[stimulus]"
+	set allowed_responses "X;O"
+
+define keyboard_response response_1
+	set timeout infinite
+	set flush yes
+	set duration keypress
+	set description "Collects keyboard responses"
+	set correct_response "[stimulus]"
+	set allowed_responses "X;O"
+
+define sketchpad upperStimulus
+	set duration 0
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=42 html=yes show_if=always text="[stimulus]" x=0 y=-320 z_index=0
+
+define sketchpad upperStimulus_1
+	set duration 0
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=42 html=yes show_if=always text="[stimulus]" x=0 y=-320 z_index=0
+
