@@ -854,6 +854,7 @@ define logger logger
 	log contextWord
 	log cueWord
 	log location
+	log typicalLocation
 	log stimulus
 	log trialType
 	log response_time
