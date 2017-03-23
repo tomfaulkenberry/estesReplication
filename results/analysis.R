@@ -6,63 +6,48 @@ setwd("~/github/estesReplication/results/")
 rawData<-read.csv("processed.csv")
 
 # clean up data...
-dataStep3<-subset(rawData,subset=correct==1) # remove errors
+dataStep3<-subset(rawData,subset=trialType=="test") # remove errors
+dataFull<-subset(dataStep3,subset=response_time<1000) # remove RTs greater than 1000 ms and fillers
+dataFull$typicalLocation <- factor(data$typicalLocation,levels=c("bottom","top")) # removes "filler" from level set of factor
+dataFull <- rename(dataFull, rt = response_time)
 
-data<-subset(dataStep3,subset=response_time<1000) # remove RTs greater than 1000 ms
+# code condition as typical or atypical
+condition <- numeric(length(dataFull$rt))
+for (i in 1:length(condition)){
+  if (dataFull$location[i]==dataFull$typicalLocation[i]){
+    condition[i] <- "typical"
+  }
+  else {
+    condition[i] <- "atypical"
+  }
+}
 
-data <- rename(data, rt = response_time)
-
-
+dataFull$condition <- condition
 
 # PERFORMANCE MEASURES
-# RT
-aggRT=aggregate(rt~subject_nr+congruity+targetSide,data=data,FUN="mean") # RT performance data aggregated by subject
-RT.aov=aov(rt~congruity*targetSide+Error(as.factor(subject_nr)/(congruity*targetSide)),data=aggRT)
-summary(RT.aov)
-print(model.tables(RT.aov,"means"),digits=3)
+# RTs
+# remove errors
+data <- subset(dataFull,subset=correct==1)
+# F_1 -- across participants
+aggRT1=aggregate(rt~subject_nr+condition,data=data,FUN="mean") # RT performance data aggregated by subject
+RT1.aov=aov(rt~condition+Error(as.factor(subject_nr)/condition),data=aggRT1)
+summary(RT1.aov)
+print(model.tables(RT1.aov,"means"),digits=3)
 
-# Init
-aggInit=aggregate(init_time~subject_nr+congruity+targetSide,data=data,FUN="mean") # RT performance data aggregated by subject
-Init.aov=aov(init_time~congruity*targetSide+Error(as.factor(subject_nr)/(congruity*targetSide)),data=aggInit)
-summary(Init.aov)
-print(model.tables(Init.aov,"means"),digits=3)
-
-# MT
-data$MT <- data$rt-data$init_time
-aggMT=aggregate(MT~subject_nr+congruity+targetSide,data=data,FUN="mean") # RT performance data aggregated by subject
-MT.aov=aov(MT~congruity*targetSide+Error(as.factor(subject_nr)/(congruity*targetSide)),data=aggMT)
-summary(MT.aov)
-print(model.tables(MT.aov,"means"),digits=3)
-
-#-----------------
-# flankr modeling
-#
-
-# tidy up some of the variable names
-flankrData <- rawData 
-flankrData <- rename(flankrData, congruency = congruity)
-
-# change RT to seconds
-flankrData$rt <- as.numeric(flankrData$rt)/1000
-
-#------------------------------------------------------------------------------
-### do the flankr modelling
-
-# get only the relevant data columns
-data2 <- flankrData %>%
-  select(subject_nr, congruency, accuracy, rt)
-
-# do some modelling (this can take AGES)
-dstp_fit <- fitDSTP(data2)
-ssp_fit <- fitSSP(data2)
-
-# store the model plots
-pdf("DSTP_fitExp2.pdf", width = 8, height = 8)
-plotFitDSTP(modelFit = dstp_fit, data = data2[complete.cases(data2),])
-dev.off()
-
-pdf("SSP_fitExp2.pdf", width = 8, height = 8)
-ssp_plot <- plotFitSSP(modelFit = ssp_fit, data = data2[complete.cases(data2),])
-dev.off()
+# F_2 -- across items (using "cueWord")
+aggRT2=aggregate(rt~cueWord+condition,data=data,FUN="mean") # RT performance data aggregated by subject
+RT2.aov=aov(rt~condition,data=aggRT2)
+summary(RT2.aov)
+print(model.tables(RT2.aov,"means"),digits=3)
 
 
+# error rates
+aggErr <- aggregate(correct~subject_nr+condition,data=dataFull,FUN="sum")
+err1.aov <- aov(correct~condition+Error(as.factor(subject_nr)/condition),data=aggErr)
+summary(err1.aov)
+print(model.tables(err1.aov,"means"),digits=3)
+
+aggErr2 <- aggregate(correct~cueWord+condition,data=dataFull,FUN="sum")
+err2.aov <- aov(correct~condition,data=aggErr)
+summary(err2.aov)
+print(model.tables(err2.aov,"means"),digits=3)
